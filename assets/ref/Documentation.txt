@@ -1,0 +1,7 @@
+API for this project:
+  https://openweathermap.org
+
+  api.openweathermap.org/data/2.5/weather
+
+Prompt for this project:
+  https://gist.github.com/short-matthew-f/7e825a1d76676717efa145ee761f337b
