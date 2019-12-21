@@ -1,4 +1,50 @@
+*{
+	
+}
 body{
-	background-color: rgba(20, 140, 250, 102);
+	
+	background-image: url('assets/img/clear-dusk.jpg');
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+}
+#container{
+	display: flex;
+	flex-flow: nowrap column;
+	align-items: center;
+	border-radius: 5px;
+	margin: .5rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	padding: .5rem;
+	background-color: rgba(20, 140, 250, 50%);
 	color: #fff;
+}
+h1{
+	display: flex;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+	text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+}
+.weatherCard{
+	margin-top: .5rem;
+	margin-bottom: .5rem;
+	margin-right: 4rem;
+	margin-left: 4rem;
+	display: flex;
+	flex-flow: wrap column;
+	align-items: center;
+	background-color: rgba(35, 0, 60, 45%);
+	width: 96%;
+	height: 240px;
+	
+	border-radius: 5px;
+}
+h3{
+	margin-top: 0;
+	display: flex;
+	justify-content: center;
+	width: 95%;
+	border-bottom: 1px solid rgba(20, 0, 45,  60%);
 }
