@@ -1,4 +1,7 @@
-// `api.openweathermap.org/data/2.5/weather?id=`
+// `api.openweathermap.org/data/2.5/weather?`
+	//id: 		+= `id=${ city id }`
+	//zip:		+= `zip=${ city zip }`
+	//coords:	+= `lat=${ latitude }&lon=${ longitude }`
 // 622cc29a246cffc4f2e0b9446ab8c15d
 
 //To Do:
@@ -25,14 +28,17 @@
 		//Make it easy to read
 */
 
-function buildWeatherCard(id, cardName){
+function buildWeatherCard(id, cardName, info){
+	
+	console.log(info,':', data[info]);
 	document.querySelector('#container').innerHTML += `
-	<div id = ${ id } class = 'weatherCard'>
+	<div id = ${ id } class = 'weatherCard columnWrap'>
 	<h3>${ cardName }</h3>
+	<div id = ${ info } class = 'infoCard columnWrap'>${ info }: ${ data[info] }</div>
 	</div>
 	`;
 }
 
-for(let i = 0; i < 100; i++){
-	buildWeatherCard(`card${ i }`, `card${ i }`);
+for(let i = 1; i <= 10; i++){
+	buildWeatherCard(`card${ i }`, `card${ i }`, `visibility`);
 }

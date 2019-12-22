@@ -6,10 +6,42 @@
 		<title>Weather Dashboard</title>
 		<link rel = 'icon' href = 'assets\img\weatherDashIcon.png'>
 		<link rel = 'stylesheet' href = 'dashStyle.css'>
+		<script src = 'tempData.js'></script>
 	</head>
 	<body>
-		<div id = 'container'>
+		<div id = 'container' class = 'columnNW'>
 			<h1>Weather Dashboard</h1>
+			<div id = 'searchCard' class = 'infoCard columnWrap'>
+				<div id = 'searchType' class = 'columnNW'>
+					<span style = 'text-align:center'>Search By:<span>
+					<span class = 'rowNW'>
+						<input type = 'radio' name = 'searchType' value = 'name' checked>
+						City Name
+					</span>
+					<span class = 'rowNW'>
+						<input type = 'radio' name = 'searchType' value = ''>
+						Zip Code
+					</span>
+					<span class = 'rowNW'>
+						<input type = 'radio' name = 'searchType' value = ''>
+						Latitude & Longitude
+					</span>
+				</div>
+				<div>
+					<div id = 'searchSection' class = 'columnNW'>
+						<span style = 'text-align:center'>Describe Location</span>
+						<input type = 'text' maxlength = 30 id = 'searchBar' placeholder = 'Type Search Criteria...'>
+						<span class = 'rowNW'>
+							<input type = 'button' style = 'width:33%' value = 'C°'>
+							<input type = 'button' style = 'width:33%' value = 'F°'>
+							<input type = 'button' style = 'width:33%' value = 'K°'>
+						</span>
+						<span>
+							<input type = 'button' style = 'width:99%' value = 'Submit'>
+						</span>
+					</div>
+				</div>
+			</div>
 		</div>
 		<script src = 'weather.js'></script>
 	</body>
