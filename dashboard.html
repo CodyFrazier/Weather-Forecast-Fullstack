@@ -11,38 +11,42 @@
 	<body>
 		<div id = 'container' class = 'columnNW'>
 			<h1>Weather Dashboard</h1>
-			<div id = 'searchCard' class = 'infoCard columnWrap'>
+			<div id = 'searchCard' class = 'infoCard columnWrap rowNW'>
 				<div id = 'searchType' class = 'columnNW'>
 					<span style = 'text-align:center'>Search By:<span>
 					<span class = 'rowNW'>
-						<input type = 'radio' name = 'searchType' value = 'name' checked>
+						<input type = 'radio' name = 'searchType' value = 'q' checked>
 						City Name
 					</span>
 					<span class = 'rowNW'>
-						<input type = 'radio' name = 'searchType' value = ''>
+						<input type = 'radio' name = 'searchType' value = 'zip'>
 						Zip Code
 					</span>
 					<span class = 'rowNW'>
-						<input type = 'radio' name = 'searchType' value = ''>
+						<input type = 'radio' name = 'searchType' value = 'lat'>
 						Latitude & Longitude
 					</span>
 				</div>
 				<div>
 					<div id = 'searchSection' class = 'columnNW'>
-						<span style = 'text-align:center'>Describe Location</span>
-						<input type = 'text' maxlength = 30 id = 'searchBar' placeholder = 'Type Search Criteria...'>
-						<span class = 'rowNW'>
-							<input type = 'button' style = 'width:33%' value = 'C°'>
-							<input type = 'button' style = 'width:33%' value = 'F°'>
-							<input type = 'button' style = 'width:33%' value = 'K°'>
+						
+						<input type = 'text' maxlength = 30 id = 'searchBarOne' placeholder = 'Type Search Criteria...'>
+						<input type = 'text' maxlength = 2 id = 'searchBarTwo' placeholder = 'Country Abbreviation...'>
+						<span class = 'scaleRow rowNW'>
+							<input type = 'button' style = 'width:33.3%' id = 'tempScale' value = 'C°'>
+							<input type = 'button' style = 'width:33.3%' value = 'F°'>
+							<input type = 'button' style = 'width:33.3%' value = 'K°'>
 						</span>
-						<span>
-							<input type = 'button' style = 'width:99%' value = 'Submit'>
+						<span id = 'submitWrapper' class = 'scaleRow rowNW'>
+							<input type = 'button' id = 'Sumbit' style = 'width:100%' value = 'Submit'>
 						</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script src = 'weather.js'></script>
+		<footer>
+			<div class = 'rowNW' style = 'margin-top: 0; margin-bottom: 1rem; justify-content: center'>© 2019 Cody Frazier</div>
+		</footer>
 	</body>
 </html>

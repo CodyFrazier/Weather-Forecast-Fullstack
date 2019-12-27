@@ -15,9 +15,10 @@ input:focus{
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 	padding: .5rem;
+	padding-bottom: 1rem;
 	background-color: rgba(20, 140, 250, 30%);
 	color: #fff;
-	backdrop-filter: blur(7px);
+	backdrop-filter: blur(4px);
 }
 h1{
 	display: flex;
@@ -34,7 +35,7 @@ h1{
 	align-items: center;
 	background-color: rgba(35, 0, 60, 45%);
 	width: 96%;
-	height: 240px;
+	padding-bottom: 1rem;
 	border-radius: 5px;
 }
 h3{
@@ -52,11 +53,7 @@ h3{
 	background-color: rgba(255, 255, 255, 60%);
 	color: #000;
 	width: 80%;
-	height: 70%;
-}
-#searchCard{
-	display: flex;
-	flex-flow: nowrap row;
+	
 }
 #searchType{
 	align-items: flex-start;
@@ -72,11 +69,25 @@ h3{
 }
 #searchSection input{
 	text-align: center;
-	background-color: rgba(60, 0, 95, 50%);
+	background-color: rgba(60, 0, 95, 70%);
 	border-radius: 5px;
+	border-color: rgba(160, 80, 200, 70%);
+	color: #fff;
 }
 #searchSection input::placeholder{
-	color: #fff;
+	color: #aaa;
+}
+#searchSection input#tempScale{
+	border-style: inset;
+	background-color: rgba(10, 0, 45, 80%);
+	border-color: rgba(20, 0, 65, 50%);
+	color: #ea7200;
+	font-weight: 900;
+}
+.largeFont{
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+	font-size: 96px;
 }
 .columnNW{
 	display: flex;
@@ -94,3 +105,4 @@ h3{
 	display: flex;
 	flex-flow: wrap row;
 }
+
