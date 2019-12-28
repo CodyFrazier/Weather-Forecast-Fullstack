@@ -6,7 +6,6 @@
 		<title>Weather Dashboard</title>
 		<link rel = 'icon' href = 'assets\img\weatherDashIcon.png'>
 		<link rel = 'stylesheet' href = 'dashStyle.css'>
-		<script src = 'tempData.js'></script>
 	</head>
 	<body>
 		<div id = 'container' class = 'columnNW'>
@@ -33,9 +32,9 @@
 						<input type = 'text' maxlength = 30 id = 'searchBarOne' placeholder = 'Type Search Criteria...'>
 						<input type = 'text' maxlength = 2 id = 'searchBarTwo' placeholder = 'Country Abbreviation...'>
 						<span class = 'scaleRow rowNW'>
-							<input type = 'button' style = 'width:33.3%' id = 'tempScale' value = 'C°'>
-							<input type = 'button' style = 'width:33.3%' value = 'F°'>
-							<input type = 'button' style = 'width:33.3%' value = 'K°'>
+							<input type = 'button' style = 'width:33.3%' id = 'tempScale' value = '°C'>
+							<input type = 'button' style = 'width:33.3%' value = '°F'>
+							<input type = 'button' style = 'width:33.3%' value = '°K'>
 						</span>
 						<span id = 'submitWrapper' class = 'scaleRow rowNW'>
 							<input type = 'button' id = 'Sumbit' style = 'width:100%' value = 'Submit'>
@@ -47,6 +46,6 @@
 		<script src = 'weather.js'></script>
 		<footer>
 			<div class = 'rowNW' style = 'margin-top: 0; margin-bottom: 1rem; justify-content: center'>© 2019 Cody Frazier</div>
-		</footer>
+		</footer>		
 	</body>
 </html>

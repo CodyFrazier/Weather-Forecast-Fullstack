@@ -84,6 +84,14 @@ h3{
 	color: #ea7200;
 	font-weight: 900;
 }
+#placeCard{
+	margin: 1rem;
+	font-size: 36px;
+}
+footer{
+	font-weight: bold;
+	text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+}
 .largeFont{
 	padding-top: 2rem;
 	padding-bottom: 2rem;
