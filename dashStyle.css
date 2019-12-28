@@ -85,12 +85,22 @@ h3{
 	font-weight: 900;
 }
 #placeCard{
-	margin: 1rem;
+	margin-top: 1rem;
 	font-size: 36px;
+}
+#timeCard.clock{
+	justify-content: center;
+	margin-bottom: .5rem;
+	border-bottom-right-radius: 25px;
+	border-bottom-left-radius: 25px; 
+	background-color: rgba(70, 0, 95, 30%);
+	color: #ea7200;
+	font-size: 24px;
+	width: 70%;
 }
 footer{
 	font-weight: bold;
-	text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+	text-shadow: -1px 0 #ea7200, 0 1px #ea7200, 1px 0 #ea7200, 0 -1px #ea7200;
 }
 .largeFont{
 	padding-top: 2rem;
