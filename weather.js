@@ -1,17 +1,3 @@
-//To Do:
-/*	
-	//To Show:
-		//Hourly Forecast for several days
-		//Several maps
-			//precipitation intensity
-			//accumulated precipitation
-	
-	//True goal:
-		//Make it pleasant to use
-		//Make it easy to read
-*/
-
-
 const appId = '622cc29a246cffc4f2e0b9446ab8c15d';
 
 async function searchSubmit(){
@@ -22,9 +8,7 @@ async function searchSubmit(){
 		const searchType = [...document.querySelectorAll('#searchType input')].filter(radio => { return radio.checked })[0].value;
 		const searchString = `${ document.getElementById('searchBarOne').value }${ searchType === 'lat' ? '&' : ',' }${ searchType === 'lat' ? 'lon=' : '' }${ document.getElementById('searchBarTwo').value.toLowerCase() }${ scale }`;
 		const fullStr = `https://api.openweathermap.org/data/2.5/weather?${ searchType }=${ searchString }&APPID=${ appId }`;
-		console.log(`searchType: ${ searchType }; searchString: ${ searchString } :
-		: ${ fullStr } ::
-		:: ${ fullStr.length }`);
+		
 		if((fullStr.length > 90 && scale === '') || (fullStr.length > 103 && scale === '&units=metric') || (fullStr.length > 105 && scale === '&units=imperial')){
 			const response = await fetch(fullStr);
 			const str = await response.json();
@@ -48,9 +32,7 @@ function buildWeatherCard(apiResponse, date){
 		});
 		return newArr.join(' ');
 	}
-	console.log(date);
 	const clock = date => {
-		console.log(date);
 		let day = date.getDay();
 		switch(day){
 			case 0:
@@ -96,8 +78,8 @@ function buildWeatherCard(apiResponse, date){
 				month = 'Dec';
 		}
 		const dayNum = date.getDate();
-		const hour = date.getHours();
-		const minutes = date.getMinutes();
+		const hour = date.getHours() > 9 ? date.getHours() : `0${ date.getHours() }`;
+		const minutes = date.getMinutes() > 9 ? date.getMinutes() : `0${ date.getMinutes() }`;
 		const year = date.getFullYear();
 		return `${day.slice(0, 3)} ${dayNum} ${month} ${year}, ${hour}:${minutes}`;
 	}
@@ -148,11 +130,10 @@ function buildWeatherCard(apiResponse, date){
 	<div class = 'infoCard columnWrap largeFont'>${ Math.round(apiResponse.main.temp) }${ document.querySelector('#tempScale').value }</div>
 	</div>
 	<div id = "hourlyCard" class = 'weatherCard columnWrap'>
-	<h3>Hourly Forecast</h3>
-	<div class = 'infoCard columnWrap'>
-	<span>Graph of Daily Data</span>
-	<span>Low: ${ apiResponse.main.temp_min }${ document.querySelector('#tempScale').value }</span>
-	<span>High: ${ apiResponse.main.temp_max }${ document.querySelector('#tempScale').value }</span>
+	<h3>Temperature Variance</h3>
+	<div class = 'infoCard columnWrap smallFont'>
+	<span>Low: ${ Math.round(apiResponse.main.temp_min) }${ document.querySelector('#tempScale').value }</span>
+	<span>High: ${ Math.round(apiResponse.main.temp_max) }${ document.querySelector('#tempScale').value }</span>
 	</div>
 	</div>
 	<div id = "precipRate" class = 'weatherCard columnWrap'>
@@ -160,10 +141,10 @@ function buildWeatherCard(apiResponse, date){
 	<div class = 'infoCard columnWrap'>Rainfall per given time</div>
 	</div>
 	<div id = "precipAmount" class = 'weatherCard columnWrap'>
-	<h3>Accumulated Precipitation</h3>
+	<h3>Currently Undefined</h3>
 	<div class = 'infoCard columnWrap'>
-	<span>Rain over 3 hours: ${ "apiResponse.rain['3h']" }mm</span>
-	<span>Rain over 1 hour: ${ "apiResponse.rain['1h']" }mm</span>
+	<span>Fill In</span>
+	<span>Fill In</span>
 	</div>
 	</div>
 	</div>
@@ -174,18 +155,6 @@ function buildWeatherCard(apiResponse, date){
 }
 
 function setBackground(apiResponse){
-	/*
-		list of images:
-		
-			partCloudy-night **
-			fog-dusk **
-			fog-night **
-			lightning-day **
-			snow-day **
-			snow-dusk **
-			snow-night **
-			rain-day **
-	*/
 	
 	//timezone: apiResponse.timezone;
 	const time = new Date(new Date().getTime() + (apiResponse.timezone * 1000) + (1000 * 60 * 60 * 8));
@@ -194,13 +163,21 @@ function setBackground(apiResponse){
 	: 'dusk';
 	const clouds = apiResponse.clouds.all;
 	const clarity = apiResponse.weather[0].main.toLowerCase();
+	
+	//Need to rework this so it will account for fire, lighning, and fog
 	const backURL = `${ clouds > 35 ? 'cloudy' : clouds > 20 ? 'partCloudy' : 'clear' }-${ setDayNight }`;
 	document.querySelector('body').style.backgroundImage = `url('assets/img/${ backURL }.jpg')`;
 	return time;
 }
 
+function getKey(eventKey){
+	if(eventKey.code === 'Enter'){
+		searchSubmit();
+	}
+}
+
 function setListeners(){
-	const radioEar = document.querySelector('#searchType').addEventListener('click', ({ target }) => { //alter text input fields to reflect the possible values.
+	const radioEar = document.querySelector('#searchType').addEventListener('click', ({ target }) => {
 		const bar1 = document.querySelector('#searchBarOne');
 		const bar2 = document.querySelector('#searchBarTwo');
 		bar1.value = '';
@@ -237,6 +214,8 @@ function setListeners(){
 	});
 
 	const submissionEar = document.querySelector('#submitWrapper').addEventListener('click', searchSubmit);
+	
+	const entEar = document.addEventListener('keydown', getKey);
 	
 	return [submissionEar, tempEar, radioEar];
 }

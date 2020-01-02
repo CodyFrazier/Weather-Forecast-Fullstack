@@ -107,6 +107,11 @@ footer{
 	padding-bottom: 2rem;
 	font-size: 96px;
 }
+.smallFont{
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	font-size: 36px;
+}
 .columnNW{
 	display: flex;
 	flex-flow: nowrap column;
