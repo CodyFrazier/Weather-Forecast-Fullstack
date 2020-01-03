@@ -1,6 +1,7 @@
 const appId = '622cc29a246cffc4f2e0b9446ab8c15d';
 
 async function searchSubmit(){
+	event.preventDefault();
 	if(document.querySelector('#searchBarOne').value && document.querySelector('#searchBarTwo').value){
 		const scale = document.querySelector('#tempScale').value === '°C' ? '&units=metric'
 		: document.querySelector('#tempScale').value === '°F' ? '&units=imperial'
@@ -31,6 +32,18 @@ function buildWeatherCard(apiResponse, date){
 			return word.join('');
 		});
 		return newArr.join(' ');
+	}
+	const windDir = () => {
+		const response = apiResponse.wind.deg;
+		const direction = response > 337.5 || response < 22.6 ? 'North' 
+		: response > 292.5 ? 'North West'
+		: response > 247.5 ? 'West'
+		: response > 202.5 ? 'South West'
+		: response > 157.5 ? 'South'
+		: response > 112.5 ? 'South East'
+		: response > 67.5 ? 'East'
+		: 'North East'
+		return direction;
 	}
 	const clock = date => {
 		let day = date.getDay();
@@ -77,7 +90,7 @@ function buildWeatherCard(apiResponse, date){
 			case 11:
 				month = 'Dec';
 		}
-		const dayNum = date.getDate();
+		const dayNum = date.getDate() > 9 ? date.getDate() : `0${ date.getDate() }`;
 		const hour = date.getHours() > 9 ? date.getHours() : `0${ date.getHours() }`;
 		const minutes = date.getMinutes() > 9 ? date.getMinutes() : `0${ date.getMinutes() }`;
 		const year = date.getFullYear();
@@ -85,7 +98,7 @@ function buildWeatherCard(apiResponse, date){
 	}
 	document.querySelector('body').innerHTML = `
 	<div id = 'container' class = 'columnNW'>
-	<h1>Weather Dashboard</h1>
+	<h1>Global Weather Search</h1>
 	<div id = 'searchCard' class = 'infoCard columnWrap rowNW'>
 	<div id = 'searchType' class = 'columnNW'>
 	<span style = 'text-align:center'>Search By:<span>
@@ -103,20 +116,20 @@ function buildWeatherCard(apiResponse, date){
 	</span>
 	</div>
 	<div>
-	<div id = 'searchSection' class = 'columnNW'>
+	<form id = 'searchSection' class = 'columnNW'>
 	<span id = 'texts' class = 'columnNW'>
 	<input type = 'text' maxlength = 30 id = 'searchBarOne' placeholder = 'City Name...'>
 	<input type = 'text' maxlength = 2 id = 'searchBarTwo' placeholder = 'Country Abbreviation...'>
 	</span>
-	<span class = 'scaleRow rowNW'>
+	<span class = 'scaleRow rowNW' style = 'width: 108%'>
 	<input type = 'button' style = 'width:33.3%' id = 'tempScale' value = '°C'>
 	<input type = 'button' style = 'width:33.3%' value = '°F'>
 	<input type = 'button' style = 'width:33.3%' value = '°K'>
 	</span>
-	<span id = 'submitWrapper' class = 'scaleRow rowNW'>
+	<span id = 'submitWrapper' class = 'scaleRow rowNW' style = 'width: 108%'>
 	<input type = 'button' id = 'Sumbit' style = 'width:100%' value = 'Submit'>
 	</span>
-	</div>
+	</form>
 	</div>
 	</div>
 	<div id = 'placeCard' class = 'infoCard columnNW'>
@@ -136,30 +149,36 @@ function buildWeatherCard(apiResponse, date){
 	<span>High: ${ Math.round(apiResponse.main.temp_max) }${ document.querySelector('#tempScale').value }</span>
 	</div>
 	</div>
-	<div id = "precipRate" class = 'weatherCard columnWrap'>
-	<h3>Precipitation Intensity</h3>
-	<div class = 'infoCard columnWrap'>Rainfall per given time</div>
+	<div id = "weatherDesc" class = 'weatherCard columnWrap'>
+	<h3>Current Weather</h3>
+	<div class = 'infoCard columnWrap smallFont'>${ apiResponse.weather[0].main }</div>
+	<div class = 'infoCard columnWrap addOn' style = 'font-size:24px'>${ apiResponse.weather[0].description }</div>
 	</div>
-	<div id = "precipAmount" class = 'weatherCard columnWrap'>
-	<h3>Currently Undefined</h3>
-	<div class = 'infoCard columnWrap'>
-	<span>Fill In</span>
-	<span>Fill In</span>
+	<div id = "currentHumidity" class = 'weatherCard columnWrap'>
+	<h3>Humidity</h3>
+	<div class = 'infoCard columnWrap largeFont'>
+	<span>${ apiResponse.main.humidity }%</span>
 	</div>
 	</div>
+	
+	<div id = 'windData' class = 'weatherCard columnWrap'>
+	<h3>Wind Status</h3>
+	<div class = 'infoCard columnWrap smallFont'>Blowing: ${ windDir() }</div>
+	<div class = 'infoCard columnWrap smallFont addOn'>Speed: ${ apiResponse.wind.speed } ${ document.querySelector('#tempScale').value === '°F' ? 'mph' : 'm/s' }</div>
+	</div>
+	
 	</div>
 	<footer>
 	<div class = 'rowNW' style = 'margin-top: 0; margin-bottom: 1rem; justify-content: center'>© 2019 Cody Frazier</div>
 	</footer>	
-	`;	
+	`;
 }
 
 function setBackground(apiResponse){
-	
-	//timezone: apiResponse.timezone;
-	const time = new Date(new Date().getTime() + (apiResponse.timezone * 1000) + (1000 * 60 * 60 * 8));
-	setDayNight = (time.getTime() > apiResponse.sys.sunrise * 1000 + 30000) && (time.getTime() < apiResponse.sys.sunset * 1000 - 30000) ? 'day'
-	: (time.getTime() > apiResponse.sys.sunset * 1000 + 30000) || (time.getTime() < apiResponse.sys.sunrise * 1000 - 30000) ? 'night'
+	const variance = (apiResponse.timezone * 1000) + (1000 * 60 * 60 * 8);
+	const time = new Date(new Date().getTime() + variance);
+	setDayNight = (time.getTime() - variance > apiResponse.sys.sunrise * 1000 + 900000) && (time.getTime() - variance < apiResponse.sys.sunset * 1000 - 900000) ? 'day'
+	: (time.getTime() - variance > apiResponse.sys.sunset * 1000 + 900000) || (time.getTime() - variance < apiResponse.sys.sunrise * 1000 - 900000) ? 'night'
 	: 'dusk';
 	const clouds = apiResponse.clouds.all;
 	const clarity = apiResponse.weather[0].main.toLowerCase();

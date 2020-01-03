@@ -9,7 +9,7 @@
 	</head>
 	<body>
 		<div id = 'container' class = 'columnNW'>
-			<h1>Weather Dashboard</h1>
+			<h1>Global Weather Search</h1>
 			<div id = 'searchCard' class = 'infoCard columnWrap rowNW'>
 				<div id = 'searchType' class = 'columnNW'>
 					<span style = 'text-align:center'>Search By:<span>
@@ -27,20 +27,20 @@
 					</span>
 				</div>
 				<div>
-					<div id = 'searchSection' class = 'columnNW'>
+					<form id = 'searchSection' class = 'columnNW'>
 						<span id = 'texts' class = 'columnNW'>
 							<input type = 'text' maxlength = 30 id = 'searchBarOne' placeholder = 'City Name...'>
 							<input type = 'text' maxlength = 2 id = 'searchBarTwo' placeholder = 'Country Abbreviation...'>
 						</span>
-						<span class = 'scaleRow rowNW'>
+						<span class = 'scaleRow rowNW' style = 'width: 108%'>
 							<input type = 'button' style = 'width:33.3%' id = 'tempScale' value = '°C'>
 							<input type = 'button' style = 'width:33.3%' value = '°F'>
 							<input type = 'button' style = 'width:33.3%' value = '°K'>
 						</span>
-						<span id = 'submitWrapper' class = 'scaleRow rowNW'>
+						<span id = 'submitWrapper' class = 'scaleRow rowNW' style = 'width: 108%'>
 							<input type = 'button' id = 'Sumbit' style = 'width:100%' value = 'Submit'>
 						</span>
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>
