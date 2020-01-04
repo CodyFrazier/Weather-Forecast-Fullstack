@@ -85,8 +85,32 @@ h3{
 	color: #ea7200;
 	font-weight: 900;
 }
-#placeCard{
+#umbraCard{
+	justify-content: space-between;
 	margin-top: 1rem;
+	border-top-right-radius: 25px; 
+	border-top-left-radius: 25px; 
+	background-color: rgba(70, 0, 95, 30%);
+	color: #ea7200;
+	font-size: 24px;
+	width: 300px;
+}
+.umbral input{
+	border: none;
+	background-color: rgba(70, 0, 95, 30%);
+	color: #ea7200;
+	font-size: 24px;
+}
+#umbra2{
+	border-top-right-radius: 25px;
+}
+#umbraCard input.umbraScale{
+	border: 1px solid;
+	border-style: inset;
+	background-color: rgba(40, 0, 45, 50%);
+	border-color: rgba(40, 0, 65, 30%);
+}
+#placeCard{
 	font-size: 36px;
 }
 #timeCard.clock{
@@ -131,9 +155,5 @@ footer{
 .rowWrap{
 	display: flex;
 	flex-flow: wrap row;
-}
-
-@media screen and (min-width: 481px){
-	
 }
 

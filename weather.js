@@ -1,4 +1,5 @@
 const appId = '622cc29a246cffc4f2e0b9446ab8c15d';
+let currentClock = '';
 
 async function searchSubmit(){
 	event.preventDefault();
@@ -13,16 +14,19 @@ async function searchSubmit(){
 		if((fullStr.length > 90 && scale === '') || (fullStr.length > 103 && scale === '&units=metric') || (fullStr.length > 105 && scale === '&units=imperial')){
 			const response = await fetch(fullStr);
 			const str = await response.json();
-			const clock = setBackground(str);
-			buildWeatherCard(str, clock);
+			const dateArr = setBackground(str);
+			currentClock = buildWeatherCard(str, dateArr);
 			const newEars = setListeners();
 		}
 	}
 }
 
-function buildWeatherCard(apiResponse, date){
+function buildWeatherCard(apiResponse, dateArr){
+	const date = dateArr[0];
+	const umbra = dateArr[1].substr(0,1).toUpperCase() + dateArr[1].substr(1, dateArr[1].length - 1);
+	const currentScale = document.querySelector('.umbraScale') ? document.querySelector('.umbraScale').value : document.querySelector('#tempScale').value;
 	const buildLocus = () => {
-		const sbo = document.querySelector('#searchBarOne').value;
+		const sbo = apiResponse.name;
 		let newArr = sbo.split(' ');
 		newArr = newArr.map(([...word]) => {
 			word[0] = word[0].toUpperCase();
@@ -44,57 +48,6 @@ function buildWeatherCard(apiResponse, date){
 		: response > 67.5 ? 'East'
 		: 'North East'
 		return direction;
-	}
-	const clock = date => {
-		let day = date.getDay();
-		switch(day){
-			case 0:
-				day = 'Sun';
-			case 1:
-				day = 'Mon';
-			case 2:
-				day = 'Tue';
-			case 3:
-				day = 'Wed';
-			case 4:
-				day = 'Thu';
-			case 5:
-				day = 'Fri';
-			case 6:
-				day = 'Sat';
-		}
-		let month = date.getMonth();
-		switch(month){
-			case 0:
-				month = 'Jan';
-			case 1:
-				month = 'Feb';
-			case 2:
-				month = 'Mar';
-			case 3:
-				month = 'Apr';
-			case 4:
-				month = 'May';
-			case 5:
-				month = 'Jun';
-			case 6:
-				month = 'Jul';
-			case 7:
-				month = 'Aug';
-			case 8:
-				month = 'Sep';
-			case 9:
-				month = 'Oct';
-			case 10:
-				month = 'Nov';
-			case 11:
-				month = 'Dec';
-		}
-		const dayNum = date.getDate() > 9 ? date.getDate() : `0${ date.getDate() }`;
-		const hour = date.getHours() > 9 ? date.getHours() : `0${ date.getHours() }`;
-		const minutes = date.getMinutes() > 9 ? date.getMinutes() : `0${ date.getMinutes() }`;
-		const year = date.getFullYear();
-		return `${day.slice(0, 3)} ${dayNum} ${month} ${year}, ${hour}:${minutes}`;
 	}
 	document.querySelector('body').innerHTML = `
 	<div id = 'container' class = 'columnNW'>
@@ -132,11 +85,17 @@ function buildWeatherCard(apiResponse, date){
 	</form>
 	</div>
 	</div>
+	<div id = 'umbraCard' class = 'umbra rowNW'>
+	<span class = 'rowNW' style = 'width: 50%; justify-content: center;'>
+	 ${ umbra }${ umbra === 'Dusk' ? '' : '-Time' }
+	</span>
+	<span class = 'umbral'><input type = 'button' class = "${ currentScale === '°F' || currentScale === ' 12H ' ? 'umbraScale' : '' }" value = ' 12H '><input type = 'button' id = 'umbra2' class = "${ currentScale === '°F' || currentScale === ' 12H ' ? '' : 'umbraScale' }" value = ' 24H '></span>
+	</div>
 	<div id = 'placeCard' class = 'infoCard columnNW'>
-	${ buildLocus() }, ${ document.querySelector('#searchBarTwo').value.toUpperCase() }
+	${ buildLocus() }, ${ apiResponse.sys.country.toUpperCase() }
 	</div>
 	<div id = 'timeCard' class = 'clock rowNW'>
-	${ clock(date) }
+	${ setClock(date) }
 	</div>
 	<div id = "airTemp" class = 'weatherCard columnWrap'>
 	<h3>Air Temperature</h3>
@@ -160,18 +119,17 @@ function buildWeatherCard(apiResponse, date){
 	<span>${ apiResponse.main.humidity }%</span>
 	</div>
 	</div>
-	
 	<div id = 'windData' class = 'weatherCard columnWrap'>
 	<h3>Wind Status</h3>
 	<div class = 'infoCard columnWrap smallFont'>Blowing: ${ windDir() }</div>
 	<div class = 'infoCard columnWrap smallFont addOn'>Speed: ${ apiResponse.wind.speed } ${ document.querySelector('#tempScale').value === '°F' ? 'mph' : 'm/s' }</div>
 	</div>
-	
 	</div>
 	<footer>
 	<div class = 'rowNW' style = 'margin-top: 0; margin-bottom: 1rem; justify-content: center'>© 2019 Cody Frazier</div>
 	</footer>	
 	`;
+	return date;
 }
 
 function setBackground(apiResponse){
@@ -186,12 +144,67 @@ function setBackground(apiResponse){
 	//Need to rework this so it will account for fire, lighning, and fog
 	const backURL = `${ clouds > 35 ? 'cloudy' : clouds > 20 ? 'partCloudy' : 'clear' }-${ setDayNight }`;
 	document.querySelector('body').style.backgroundImage = `url('assets/img/${ backURL }.jpg')`;
-	return time;
+	return [time, setDayNight];
 }
 
 function getKey(eventKey){
 	if(eventKey.code === 'Enter'){
 		searchSubmit();
+	}
+}
+
+function setClock(date){
+	let day = date.getDay();
+	day = day > 5 ? 'Sat'
+	: day > 4 ? 'Fri'
+	: day > 3 ? 'Thu'
+	: day > 2 ? 'Wed'
+	: day > 1 ? 'Tue'
+	: day > 0 ? 'Mon'
+	: 'Sun';
+	let month = date.getMonth();
+	const dayNum = date.getDate() > 9 ? date.getDate() : `0${ date.getDate() }`;
+	const year = date.getFullYear();
+	const minutes = date.getMinutes() > 9 ? date.getMinutes() : `0${ date.getMinutes() }`;
+	let hour = date.getHours() > 9 ? date.getHours() : `0${ date.getHours() }`;
+	let clockRotation = '';
+	
+	const formatDate = () => {
+		month = month > 10 ? 'Dec'
+		: month > 9 ? 'Nov'
+		: month > 8 ? 'Oct'
+		: month > 7 ? 'Sep'
+		: month > 6 ? 'Aug'
+		: month > 5 ? 'Jul'
+		: month > 4 ? 'Jun'
+		: month > 3 ? 'May'
+		: month > 2 ? 'Apr'
+		: month > 1 ? 'Mar'
+		: month > 0 ? 'Feb'
+		: 'Jan';
+		return `${day.slice(0, 3)} ${dayNum} ${month} ${year}, ${hour}:${minutes} ${ clockRotation }`;
+	}
+	
+	if(!document.querySelector('.umbraScale')){
+		if(document.querySelector('#tempScale').value === '°F' && hour > 12){
+			clockRotation = 'PM';
+			hour = hour - 12;
+		}else if(document.querySelector('#tempScale').value === '°F' && !(hour > 12)){
+			clockRotation = 'AM';
+		}else{
+			return formatDate();
+		}
+		return `${day.slice(0, 3)} ${ month > 8 ? month + 1 : '0' + (month + 1) }/${ dayNum }/${ year }, ${ hour }:${ minutes } ${ clockRotation }`;	
+	}else{
+		if(document.querySelector('.umbraScale').value === ' 12H ' && hour > 12){
+			clockRotation = 'PM';
+			hour = hour - 12;
+		}else if(document.querySelector('.umbraScale').value === ' 12H ' && !(hour > 12)){
+			clockRotation = 'AM';
+		}else{
+			return formatDate();
+		}
+		return `${day.slice(0, 3)} ${ month > 8 ? month + 1 : '0' + (month + 1) }/${ dayNum }/${ year }, ${ hour }:${ minutes } ${ clockRotation }`;
 	}
 }
 
@@ -231,6 +244,22 @@ function setListeners(){
 		});
 		target.id = 'tempScale';
 	});
+	
+	if(document.querySelector('.umbral')){
+		const hourEar = document.querySelector('.umbral').addEventListener('click', ({ target }) => {
+			document.querySelectorAll('.umbral input').forEach(button => {
+				if(button.classList.contains('umbraScale')){
+					button.classList = '';
+				}
+			});
+			if(target.type === 'button'){
+				target.classList = 'umbraScale';
+				console.log('currentClock: ', currentClock);
+				console.log(document.querySelector('.clock').innerHTML = setClock(currentClock));
+				console.log(document.querySelector('.clock'));
+			}
+		});
+	}	
 
 	const submissionEar = document.querySelector('#submitWrapper').addEventListener('click', searchSubmit);
 	
